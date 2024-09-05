@@ -56,7 +56,20 @@ public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
     }else{
         return ResponseEntity.status(400).body(null);
     }
+}
 
+    //localhost:8080/messages/{messageId}.
+    @GetMapping("/{messageId}")
+    public ResponseEntity<Message> getMessageByID(@PathVariable Long messageId){
+        System.out.println("\n test " + messageId +"\n");
+        Message returnmessage = messageService.getMessageByID(messageId);
+        if(returnmessage!=null){
+            return ResponseEntity.ok(returnmessage);
+        }
+        else {
+            return ResponseEntity.status(200).body(null);
+        }
+    
 }
 
 

@@ -44,7 +44,7 @@ public class MessageService {
      */
   
     public Message getMessageByID(Long messageId){
-        return messageRepository.findById(messageId).get();
+        return messageRepository.findById(messageId).orElse(null);
     }
 
     
