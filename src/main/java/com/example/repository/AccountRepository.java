@@ -17,6 +17,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>  {
  * querry to ensure an account exists with specific Username and password
  */
 
-@Query("FROM Account WHERE usernamevar = :username AND password = :passwordvar")
-Account verifyAccount(@Param("usernamevar") String username, @Param("passwordvar") String password);
+@Query("FROM Account WHERE username = :username AND password = :password")
+Account verifyAccount(@Param("username") String username, @Param("password") String password);
 }

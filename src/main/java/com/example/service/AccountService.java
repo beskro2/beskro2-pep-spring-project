@@ -29,7 +29,8 @@ public Account persistAccount(Account account){
     
 }
 
-public Account verifyAccount(Account account){
+public  Account verifyAccount(Account account){
+    System.out.println("made it to service");
    return accountRepository.verifyAccount(account.getUsername(), account.getPassword());
 }
 
