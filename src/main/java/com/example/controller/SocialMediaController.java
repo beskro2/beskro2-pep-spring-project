@@ -44,11 +44,20 @@ public SocialMediaController(MessageService messageService){
 
 @RequestMapping(method = RequestMethod.GET)
 public @ResponseBody List<Message> getAllMessages(){
-    System.out.println("\n\n we made in through the first hoop \n\n");
     return messageService.getAllMessages();
 }
 
+@RequestMapping(method = RequestMethod.POST)
+public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
 
+    Message returnmessage = messageService.saveMessage(message);
+    if(returnmessage!=null){
+        return ResponseEntity.ok(returnmessage);
+    }else{
+        return ResponseEntity.status(400).body(null);
+    }
+
+}
 
 
 

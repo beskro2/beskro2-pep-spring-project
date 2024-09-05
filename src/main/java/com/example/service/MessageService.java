@@ -31,7 +31,12 @@ public class MessageService {
      * add new message to db
      */
     public Message saveMessage(Message message){
+        if(message.getMessageText().length()<255 && message.getMessageText().length()>0){
         return messageRepository.save(message);
+    }
+
+    System.out.println("\n\n Was not added \n\n");
+    return null;
     }
 
     /*
