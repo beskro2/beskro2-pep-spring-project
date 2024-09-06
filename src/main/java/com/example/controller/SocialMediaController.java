@@ -118,6 +118,17 @@ Account returnaccount = accountService.verifyAccount(account);
 }
 }
 
+@PostMapping("/register")
+public ResponseEntity<Account> registerNewAccount(@RequestBody Account account){
+   Account returnaccount = accountService.persistAccount(account);
+   if(returnaccount != null && accountService.noDuplicatesCheck(account) == null){
+    return ResponseEntity.ok(returnaccount);
+   }else if(returnaccount == null && accountService.noDuplicatesCheck(account) !=null){
+    return ResponseEntity.status(409).body(null);
+   }else{
+    return ResponseEntity.status(400).body(null);
+   }
+}
 
 }
 

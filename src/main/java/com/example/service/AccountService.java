@@ -19,8 +19,7 @@ public AccountService(AccountRepository accountRepository){
 //method to add a new account to db
 public Account persistAccount(Account account){
     if(account.getPassword().length()>4 && 
-    account.getUsername().length()>0 && 
-    accountRepository.verifyAccount(account.getUsername(), account.getPassword())!= null){
+    account.getUsername().length()>0 ){
 
     return accountRepository.save(account);
     }else{
@@ -28,6 +27,11 @@ public Account persistAccount(Account account){
     }
     
 }
+
+public Account noDuplicatesCheck(Account account){
+    return accountRepository.existanceCheck(account.getUsername());
+}
+
 
 public  Account verifyAccount(Account account){
     System.out.println("made it to service");
