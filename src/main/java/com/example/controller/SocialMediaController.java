@@ -35,22 +35,23 @@ import com.example.service.MessageService;
  * week 10 day 1
  */
 @Controller
-@RequestMapping("/messages")
+//@RequestMapping("/messages")
 public class SocialMediaController {
 
-
+AccountService accountService;
 MessageService messageService;
 
-public SocialMediaController(MessageService messageService){
+public SocialMediaController(MessageService messageService, AccountService accountService){
     this.messageService = messageService;
+    this.accountService= accountService;
 }
 
-@RequestMapping(method = RequestMethod.GET)
+@GetMapping("/messages")
 public @ResponseBody List<Message> getAllMessages(){
     return messageService.getAllMessages();
 }
 
-@RequestMapping(method = RequestMethod.POST)
+@PostMapping("/messages")
 public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
 
     Message returnmessage = messageService.saveMessage(message);
@@ -62,7 +63,7 @@ public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
 }
 
     //localhost:8080/messages/{messageId}.
-    @GetMapping("/{messageId}")
+    @GetMapping("/messages/{messageId}")
     public ResponseEntity<Message> getMessageByID(@PathVariable int messageId){
       
         Message returnmessage = messageService.getMessageByID(messageId);
@@ -73,7 +74,7 @@ public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
         }
 }
 
-@DeleteMapping("/{messageId}")
+@DeleteMapping("/messages/{messageId}")
 public ResponseEntity<Integer> deleteById(@PathVariable int messageId){
    int rowsaffected = messageService.DeleteMessageByID(messageId);
    if(rowsaffected ==1 ){
@@ -84,7 +85,7 @@ public ResponseEntity<Integer> deleteById(@PathVariable int messageId){
    }
 }
 
-@PatchMapping("/{messageId}")
+@PatchMapping("/messages/{messageId}")
 public ResponseEntity<Integer> updateMessage(@PathVariable int messageId,@RequestBody Message message){
     System.out.println("\n\nWhat the hell is going on\n\n");
     int rowsaffected = messageService.updateMessageById(messageId, message);
@@ -93,26 +94,30 @@ if(rowsaffected == 1){
 }else{
     return ResponseEntity.status(400).body(null);
 }
+}
 
-
+@GetMapping(value="/accounts/{accountId}/messages")
+public @ResponseBody List<Message> getAllMessagesFromUser(@PathVariable int accountId){
+    System.out.println("this\nis\na\ntest\n");
+    return messageService.getallmessagesFromUser(accountId);
+    
 }
 
 
 
 
+@PostMapping("/login")
+public ResponseEntity<Account> login(@RequestBody Account account){
+Account returnaccount = accountService.verifyAccount(account);
 
-//@PostMapping("/login")
-//public @ResponseBody ResponseEntity<?> login(@RequestParam Account account){
-  
-    //Account returnaccount = accountservice.verifyAccount(account);
-
- //   if(returnaccount !=null){
-  //  return ResponseEntity.ok(returnaccount);
+    if(returnaccount !=null){
+    return ResponseEntity.ok(returnaccount);
    
-//}else{
- //   return ResponseEntity.status(401).body("Password or Username was incorrect.");
-//}
-//}
+}else{
+    return ResponseEntity.status(401).body(null);
+}
+}
+
 
 }
 

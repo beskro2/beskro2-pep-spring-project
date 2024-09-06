@@ -28,6 +28,7 @@ public class MessageService {
      */ 
     public List<Message> getAllMessages(){
         return messageRepository.findAll();
+        
     }
 
     /*
@@ -74,5 +75,11 @@ public class MessageService {
        
     }
 
-    
+    /*get all messages from one user */
+    public List<Message> getallmessagesFromUser(int userId){
+
+        System.out.println("service layer");
+        List<Message> returnlist = messageRepository.getAllMessagesFromUser(userId);
+     return returnlist;
+    }
 }
