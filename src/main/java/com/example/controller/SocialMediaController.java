@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,19 +63,39 @@ public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
 
     //localhost:8080/messages/{messageId}.
     @GetMapping("/{messageId}")
-    public ResponseEntity<Message> getMessageByID(@PathVariable Long messageId){
-        System.out.println("\n test " + messageId +"\n");
+    public ResponseEntity<Message> getMessageByID(@PathVariable int messageId){
+      
         Message returnmessage = messageService.getMessageByID(messageId);
         if(returnmessage!=null){
             return ResponseEntity.ok(returnmessage);
-        }
-        else {
+        }else{
             return ResponseEntity.status(200).body(null);
         }
-    
+}
+
+@DeleteMapping("/{messageId}")
+public ResponseEntity<Integer> deleteById(@PathVariable int messageId){
+   int rowsaffected = messageService.DeleteMessageByID(messageId);
+   if(rowsaffected ==1 ){
+    return ResponseEntity.ok(rowsaffected);
+   }
+   else {
+    return ResponseEntity.ok(null);
+   }
+}
+
+@PatchMapping("/{messageId}")
+public ResponseEntity<Integer> updateMessage(@PathVariable int messageId,@RequestBody Message message){
+    System.out.println("\n\nWhat the hell is going on\n\n");
+    int rowsaffected = messageService.updateMessageById(messageId, message);
+if(rowsaffected == 1){
+    return ResponseEntity.ok(rowsaffected);
+}else{
+    return ResponseEntity.status(400).body(null);
 }
 
 
+}
 
 
 

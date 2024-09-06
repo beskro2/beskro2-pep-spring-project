@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+
+
 
 
 @Service
@@ -43,8 +46,32 @@ public class MessageService {
      * return 
      */
   
-    public Message getMessageByID(Long messageId){
-        return messageRepository.findById(messageId).orElse(null);
+    public Message getMessageByID(int messageId){
+        Optional<Message> optionalmessage = messageRepository.findById(messageId);
+        if (optionalmessage.isPresent()){
+            Message returnmessage = optionalmessage.get();
+            return returnmessage;
+        }
+        else{
+            return null;
+        }
+    }
+
+    /*update a message by id */
+    public int updateMessageById(int messageID, Message message){
+        if(message.getMessageText().length()>0 && message.getMessageText().length()<255){
+       return messageRepository.updateMessageById( messageID , message.getMessageText());
+        }else{
+            return 0;
+        }
+    }
+
+
+    /*Delete message */
+    public int DeleteMessageByID(Integer messageID){
+     int test= messageRepository.deleteByIdWithCount(messageID);
+      return test;
+       
     }
 
     
