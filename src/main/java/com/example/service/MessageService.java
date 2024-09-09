@@ -16,7 +16,8 @@ import com.example.repository.MessageRepository;
 
 @Service
 public class MessageService {
-
+    @Autowired
+    private AccountService accountservice;
     private final MessageRepository messageRepository;
 
     @Autowired
@@ -35,7 +36,10 @@ public class MessageService {
      * add new message to db
      */
     public Message saveMessage(Message message){
-        if(message.getMessageText().length()<255 && message.getMessageText().length()>0){
+        System.out.println("got to savemessage");
+        if(message.getMessageText().length()<255 
+        && message.getMessageText().length()>0 
+        && accountservice.getAccountByID(message.getPostedBy())!=null){
         return messageRepository.save(message);
     }
 

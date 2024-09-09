@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +30,21 @@ public Account persistAccount(Account account){
     
 }
 
-public Account noDuplicatesCheck(Account account){
-    return accountRepository.existanceCheck(account.getUsername());
+public Account noDuplicatesCheck(String accountUsername){
+    return accountRepository.existanceCheck(accountUsername);
 }
 
+
+public Account getAccountByID(int userID){
+    System.out.println("got to accountservice");
+   Optional<Account> optionalAccount = accountRepository.findById(userID);
+   if(optionalAccount.isPresent()){
+    Account returnAccount = optionalAccount.get();
+    return returnAccount;
+   }else{
+    return null;
+   }
+}
 
 public  Account verifyAccount(Account account){
     System.out.println("made it to service");

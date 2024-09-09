@@ -53,13 +53,14 @@ public @ResponseBody List<Message> getAllMessages(){
 
 @PostMapping("/messages")
 public ResponseEntity<Message> CreateANewMessage( @RequestBody Message message){
-
+System.out.println("\nwhat the hell\n");
     Message returnmessage = messageService.saveMessage(message);
     if(returnmessage!=null){
         return ResponseEntity.ok(returnmessage);
     }else{
         return ResponseEntity.status(400).body(null);
     }
+
 }
 
     //localhost:8080/messages/{messageId}.
@@ -120,14 +121,16 @@ Account returnaccount = accountService.verifyAccount(account);
 
 @PostMapping("/register")
 public ResponseEntity<Account> registerNewAccount(@RequestBody Account account){
+    if(accountService.noDuplicatesCheck(account.getUsername()) != null){
+        return ResponseEntity.status(409).body(null);
+    }
    Account returnaccount = accountService.persistAccount(account);
-   if(returnaccount != null && accountService.noDuplicatesCheck(account) == null){
-    return ResponseEntity.ok(returnaccount);
-   }else if(returnaccount == null && accountService.noDuplicatesCheck(account) !=null){
-    return ResponseEntity.status(409).body(null);
-   }else{
+   
+    if(returnaccount != null){
+     return ResponseEntity.ok(returnaccount);
+    }else{
     return ResponseEntity.status(400).body(null);
-   }
+    }
 }
 
 }
