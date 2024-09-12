@@ -9,17 +9,21 @@ import com.example.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer>  {
 
 
-
-
 /*
  * @Param usernmae and password of the account
  * @Return the account with the provided name and password
- * querry to ensure an account exists with specific Username and password
+ * querry to ensure an account exists with specific Username and password for account log in 
  */
 
 @Query("FROM Account WHERE username = :username AND password = :password")
 Account verifyAccount(@Param("username") String username, @Param("password") String password);
 
+
+/*
+ * @Param username of the account
+ * @Return the account
+ * querry to ensure an account exists with specific Username for account creation
+ */
 @Query("SELECT a FROM Account a WHERE a.username = :username")
 Account existanceCheck(@Param("username") String username);
 }

@@ -3,7 +3,6 @@ package com.example.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,31 +24,36 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
     /*
-    return all messages
-     */ 
+ * @Param 
+ * @Return all messages 
+ * Method to Return all messages in DB
+ */
     public List<Message> getAllMessages(){
         return messageRepository.findAll();
         
     }
 
-    /*
-     * add new message to db
-     */
+     /*
+ * @Param Message without messageid
+ * @Return Message with messageid
+ * Method to save a message to the DB and then return the message with its new ID
+ */
     public Message saveMessage(Message message){
-        System.out.println("got to savemessage");
+      
         if(message.getMessageText().length()<255 
         && message.getMessageText().length()>0 
         && accountservice.getAccountByID(message.getPostedBy())!=null){
         return messageRepository.save(message);
     }
 
-    System.out.println("\n\n Was not added \n\n");
     return null;
     }
 
-    /*
-     * return 
-     */
+    /* 
+    * @Param MessageID
+    * @Return Message
+    * Method to return a method by its ID
+    */
   
     public Message getMessageByID(int messageId){
         Optional<Message> optionalmessage = messageRepository.findById(messageId);
@@ -61,8 +65,11 @@ public class MessageService {
             return null;
         }
     }
-
-    /*update a message by id */
+    /* 
+    * @Param Message ID and Message
+    * @Return 
+    * Method to save a message to the DB and then return the message with its new ID
+    */
     public int updateMessageById(int messageID, Message message){
         if(message.getMessageText().length()>0 && message.getMessageText().length()<255){
        return messageRepository.updateMessageById( messageID , message.getMessageText());
@@ -72,7 +79,7 @@ public class MessageService {
     }
 
 
-    /*Delete message */
+    /*Delete message by id */
     public int DeleteMessageByID(Integer messageID){
      int test= messageRepository.deleteByIdWithCount(messageID);
       return test;
@@ -82,7 +89,7 @@ public class MessageService {
     /*get all messages from one user */
     public List<Message> getallmessagesFromUser(int userId){
 
-        System.out.println("service layer");
+     
         List<Message> returnlist = messageRepository.getAllMessagesFromUser(userId);
      return returnlist;
     }

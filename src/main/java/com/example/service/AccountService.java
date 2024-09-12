@@ -21,8 +21,8 @@ public AccountService(AccountRepository accountRepository){
 //method to add a new account to db
 public Account persistAccount(Account account){
     if(account.getPassword().length()>4 && 
-    account.getUsername().length()>0 ){
-
+    account.getUsername().length()>0 &&
+    noDuplicatesCheck(account.getUsername())==null){
     return accountRepository.save(account);
     }else{
         return null;
@@ -36,7 +36,7 @@ public Account noDuplicatesCheck(String accountUsername){
 
 
 public Account getAccountByID(int userID){
-    System.out.println("got to accountservice");
+   
    Optional<Account> optionalAccount = accountRepository.findById(userID);
    if(optionalAccount.isPresent()){
     Account returnAccount = optionalAccount.get();
@@ -47,7 +47,6 @@ public Account getAccountByID(int userID){
 }
 
 public  Account verifyAccount(Account account){
-    System.out.println("made it to service");
    return accountRepository.verifyAccount(account.getUsername(), account.getPassword());
 }
 
